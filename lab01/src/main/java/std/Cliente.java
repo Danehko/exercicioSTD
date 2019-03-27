@@ -4,8 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Scanner;
 
-    /**
+/**
      * Cliente que envia uma String em UTF por um socket TCP e espera
      * por uma resposta do servidor
      *
@@ -17,27 +18,36 @@ import java.net.Socket;
         public static void main(String[] args) throws IOException{
             int porta = 1234;
             String ip = "127.0.0.1";
-
-            /* Estabele conexao com o servidor */
-            Socket conexao = new Socket(ip,porta);
-            System.out.println("Conectado! " + conexao);
-            /*********************************************************/
-            /* Estabelece fluxos de entrada e saida */
-            DataOutputStream fluxoSaida = new DataOutputStream(conexao.getOutputStream());
-            DataInputStream fluxoEntrada = new DataInputStream(
-                    new BufferedInputStream(conexao.getInputStream()));
+            while(true) {
+                /* Estabele conexao com o servidor */
+              Socket conexao = new Socket(ip,porta);
+              System.out.println("Conectado! " + conexao);
+              /*********************************************************/
+              /* Estabelece fluxos de entrada e saida */
+              DataOutputStream fluxoSaida = new DataOutputStream(conexao.getOutputStream());
+               DataInputStream fluxoEntrada = new DataInputStream(
+                       new BufferedInputStream(conexao.getInputStream()));
             /*********************************************************/
             /* Inicia comunicacao */
-            fluxoSaida.writeUTF("Connected");
-            fluxoSaida.flush();
 
-            String mensagem = fluxoEntrada.readUTF();
-            System.out.println("Servidor> " + mensagem);
-            /*********************************************************/
-            /* Fecha fluxos e socket */
-            fluxoSaida.close();
-            fluxoEntrada.close();
-            conexao.close();
+                Scanner teclado = new Scanner(System.in);
+                String aux = teclado.nextLine();
+
+                fluxoSaida.writeUTF(aux);
+                fluxoSaida.flush();
+
+                String[] auxiliar = aux.split(",");
+
+                if(auxiliar[0].equals("del")){
+                    String mensagem = fluxoEntrada.readUTF();
+                    System.out.println("Servidor> " + mensagem);
+                }
+                /*********************************************************/
+                /* Fecha fluxos e socket */
+                fluxoSaida.close();
+                fluxoEntrada.close();
+                conexao.close();
+            }
 
         }
 

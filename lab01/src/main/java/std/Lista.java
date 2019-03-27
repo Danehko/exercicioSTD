@@ -5,12 +5,10 @@ import java.util.HashMap;
 
 public class Lista {
 
-        private String ultimaAdd = new String();
-        private String UltimaLista = new String();
-        private HashMap<String, ArrayList<String>> listas = new HashMap<>();
+        private HashMap <String, ArrayList<String>> listas = new HashMap<>();
 
         public boolean criarLista(String s){
-            if(listas.containsKey(s)==true){
+            if(listas.containsKey(s)==false){
                 ArrayList<String> item = new ArrayList<>();
                 listas.put(s,item);
                 return true;
@@ -18,13 +16,27 @@ public class Lista {
             return false;
         }
 
-        public boolean addNaLista(ArrayList<String> s, String x){
+        public boolean addNaLista(String s, String x){
             if(listas.containsKey(s)==true){
+                ArrayList<String> aux = this.listas.get(s);
+                aux.add(x);
                 return true;
             }
             return false;
         }
+        public boolean delNaLista(ArrayList<String> s, String x) {
+            if(listas.containsKey(s)==true) {
+                ArrayList<String> aux = this.listas.get(s);
+                String item = aux.get(aux.size()-1);
+                aux.remove(aux.size()-1);
+                System.out.println("O último item da lista " + s + " é: " + item);
+                return true;
+            }
+            return false;
+        }
+
     }
+
 //Desenvolva um aplicativo servidor que armazene em memória zero ou mais listas de
 //String
 //.
@@ -33,4 +45,5 @@ public class Lista {
 //por consequência, removê-lo dessa lista.  Desenvolva um aplicativo cliente capaz de fazer
 //requisições a esse servidor.  Cliente e Servidor poderão ser desenvolvidos em diferentes
 //linguagens de programação ou em uma mesma linguagem.
+
 }
